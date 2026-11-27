@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f7f9;
+  --foreground: #0b192c;
+  --surface: #ffffff;
+  --surface-border: #dbe4ee;
+  --muted: #51647a;
+  --brand-primary: #0f67a6;
+  --brand-green: #0eb57d;
+  --brand-teal: #0d9488;
+  --brand-blue: #1677e8;
+}
+
+:root.dark {
+  --background: #060e17;
+  --foreground: #eaf2f8;
+  --surface: #0b1623;
+  --surface-border: #172a3f;
+  --muted: #8fa6bf;
+  --brand-primary: #3898e2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --background: #060e17;
+    --foreground: #eaf2f8;
+    --surface: #0b1623;
+    --surface-border: #172a3f;
+    --muted: #8fa6bf;
+    --brand-primary: #3898e2;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-border: var(--surface-border);
+  --color-muted: var(--muted);
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-green: var(--brand-green);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-blue: var(--brand-blue);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/*
+ * Global page-title scale.
+ * Page headings use <h1> (business pages render it as text-2xl font-bold).
+ * This unlayered rule overrides Tailwind's layered utilities (text-2xl /
+ * font-bold) everywhere at once, giving one consistent, lighter heading
+ * without touching every page. KPI figures use <p> and drawer/modal titles
+ * use <h2>, so they are unaffected.
+ */
+h1 {
+  font-size: 1.375rem !important; /* 22px, down from 24px */
+  line-height: 1.85rem !important;
+  font-weight: 600 !important; /* semibold, down from bold */
+  letter-spacing: -0.012em;
+}
+
+@media (min-width: 1024px) {
+  h1 {
+    font-size: 1.4375rem !important; /* 23px on large screens */
+  }
+}
+
+.nova-gradient {
+  background: linear-gradient(
+    135deg,
+    var(--brand-green) 0%,
+    var(--brand-teal) 50%,
+    var(--brand-blue) 100%
+  );
+}
+
+.nova-ambient {
+  background-image:
+    radial-gradient(at 15% 0%, rgba(14, 181, 125, 0.08) 0px, transparent 45%),
+    radial-gradient(at 88% 10%, rgba(22, 119, 232, 0.09) 0px, transparent 45%);
+}
+
+/* Subtle custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(143, 166, 191, 0.28);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(143, 166, 191, 0.45);
+}
