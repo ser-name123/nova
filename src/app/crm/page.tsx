@@ -322,7 +322,61 @@ export default function CrmPage() {
           <div className="flex items-center justify-between border-b border-surface-border px-5 py-3">
             <span className="text-xs font-semibold text-muted">{visible.length} leads shown</span>
           </div>
-          <div className="overflow-x-auto">
+          {/* Mobile Native Card List */}
+        <div className="divide-y divide-surface-border md:hidden">
+          {visible.map((lead) => (
+            <div key={lead.id} className="space-y-2.5 p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{lead.name}</p>
+                  <p className="text-xs text-muted">
+                    {lead.company} · {lead.service}
+                  </p>
+                </div>
+                <span className="text-sm font-bold tabular-nums text-foreground">
+                  {lead.value}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      lead.priority === "Hot"
+                        ? "bg-rose-500/10 text-rose-500"
+                        : lead.priority === "Warm"
+                          ? "bg-amber-500/10 text-amber-500"
+                          : "bg-sky-500/10 text-sky-500"
+                    }`}
+                  >
+                    {lead.priority}
+                  </span>
+                  <span className="rounded-md bg-brand-primary/10 px-2 py-0.5 text-[10px] font-medium text-brand-primary">
+                    {lead.stage}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => notify(`Email composer opened for ${lead.name}`)}
+                    className="rounded-lg border border-surface-border p-1.5 text-muted"
+                  >
+                    <Mail className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => notify(`WhatsApp template queued for ${lead.name}`)}
+                    className="rounded-lg border border-surface-border p-1.5 text-muted"
+                  >
+                    <MessageCircle className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Table */}
+        <div className="hidden overflow-x-auto md:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-surface-border text-xs text-muted">

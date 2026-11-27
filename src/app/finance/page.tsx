@@ -291,7 +291,46 @@ export default function FinancePage() {
         </div>
 
         {tab === "invoices" && (
-          <div className="overflow-x-auto">
+          <>
+            {/* Mobile Native Card List */}
+            <div className="divide-y divide-surface-border md:hidden">
+              {visible.map((inv) => (
+                <div key={inv.id} className="space-y-2 p-4">
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <p className="font-mono text-xs font-semibold text-brand-primary">
+                        {inv.id}
+                      </p>
+                      <p className="text-sm font-semibold">{inv.client}</p>
+                      <p className="text-[11px] text-muted">
+                        {inv.gstLabel} · {inv.gateway}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm font-bold tabular-nums">
+                        {money(invTotal(inv), inv.symbol)}
+                      </p>
+                      <button
+                        type="button"
+                        onClick={() => markPaid(inv.id)}
+                        className={`mt-1 rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
+                          inv.status === "Paid"
+                            ? "bg-brand-green/15 text-brand-teal dark:text-brand-green"
+                            : inv.status === "Pending"
+                              ? "bg-amber-500/10 text-amber-500"
+                              : "bg-rose-500/10 text-rose-500"
+                        }`}
+                      >
+                        {inv.status}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+        {/* Desktop Table */}
+        <div className="hidden overflow-x-auto md:block">
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-surface-border text-xs text-muted">
@@ -327,6 +366,7 @@ export default function FinancePage() {
               </tbody>
             </table>
           </div>
+          </>
         )}
 
         {tab === "accounting" && (

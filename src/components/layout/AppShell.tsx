@@ -9,6 +9,9 @@ import {
   ChevronDown,
   ChevronLeft,
   ChevronRight,
+  FolderKanban,
+  Inbox,
+  LayoutDashboard,
   LogOut,
   Menu,
   Moon,
@@ -16,6 +19,7 @@ import {
   Search,
   Sparkles,
   Sun,
+  Target,
   UserCircle,
   X,
 } from "lucide-react";
@@ -182,7 +186,7 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground">
       {/* Mobile overlay */}
       {mobileOpen && (
         <div
@@ -194,7 +198,7 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
       {/* Left Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex h-screen flex-col border-r border-surface-border bg-surface transition-all duration-200 lg:sticky lg:top-0 lg:h-screen ${
-          collapsed ? "w-[74px]" : "w-68"
+          collapsed ? "w-[74px]" : "w-[84vw] max-w-[280px] lg:w-68"
         } ${mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}
       >
         {/* Brand Header */}
@@ -258,9 +262,27 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
           />
         </Suspense>
 
-        {/* Multi-Tenant Org Footer */}
+        {/* Multi-Tenant Org & Mobile Profile Footer */}
         {!collapsed && (
-          <div className="border-t border-surface-border p-3">
+          <div className="space-y-2 border-t border-surface-border p-3">
+            <div className="flex items-center justify-between gap-2 md:hidden">
+              <Link
+                href="/profile"
+                onClick={() => setMobileOpen(false)}
+                className="flex flex-1 items-center gap-2 rounded-xl border border-surface-border bg-background/70 px-3 py-2 text-xs font-medium"
+              >
+                <UserCircle className="h-4 w-4 text-brand-primary" />
+                <span>Profile</span>
+              </Link>
+              <Link
+                href="/login"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-1.5 rounded-xl border border-surface-border bg-background/70 px-3 py-2 text-xs font-medium text-rose-500"
+              >
+                <LogOut className="h-4 w-4" />
+                <span>Login</span>
+              </Link>
+            </div>
             <div className="rounded-xl border border-surface-border bg-background/70 p-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-[11px] font-semibold text-foreground">
@@ -281,35 +303,49 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
       {/* Main Content Area */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Top Bar */}
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 border-b border-surface-border bg-surface/90 px-4 backdrop-blur-md lg:px-6">
-          <div className="flex items-center gap-3 flex-1 max-w-xl">
-            <button
-              type="button"
-              onClick={() => setMobileOpen(true)}
-              className="rounded-lg border border-surface-border p-2 text-muted hover:text-foreground lg:hidden"
-            >
-              <Menu className="h-4 w-4" />
-            </button>
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between gap-2 border-b border-surface-border bg-surface/95 px-3 backdrop-blur-xl lg:h-16 lg:gap-3 lg:px-6">
+          {/* Mobile Brand + Search */}
+          <div className="flex min-w-0 flex-1 items-center gap-2 lg:max-w-xl lg:gap-3">
+            <Link href="/" className="flex shrink-0 items-center gap-2 lg:hidden">
+              <Image
+                src="/images/icon.png"
+                alt="NOVA ONE"
+                width={30}
+                height={30}
+                className="h-7.5 w-7.5 rounded-lg"
+                unoptimized
+              />
+            </Link>
 
-            {/* Global Search Trigger */}
+            {/* Desktop Search Trigger */}
             <button
               type="button"
               onClick={() => setCmdOpen(true)}
-              className="flex flex-1 items-center justify-between rounded-xl border border-surface-border bg-background/80 px-3 py-2 text-left text-sm text-muted transition-colors hover:border-brand-primary/50"
+              className="hidden min-w-0 flex-1 items-center justify-between rounded-xl border border-surface-border bg-background/80 px-3 py-2 text-left text-sm text-muted transition-colors hover:border-brand-primary/50 sm:flex"
             >
-              <span className="flex items-center gap-2.5 truncate">
+              <span className="flex min-w-0 items-center gap-2.5 truncate">
                 <Search className="h-4 w-4 shrink-0 text-muted" />
                 <span className="truncate">
                   Search modules, leads, clients, invoices...
                 </span>
               </span>
-              <kbd className="hidden rounded border border-surface-border bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted sm:inline-block">
+              <kbd className="hidden shrink-0 rounded border border-surface-border bg-surface px-1.5 py-0.5 font-mono text-[10px] text-muted md:inline-block">
                 Ctrl K
               </kbd>
             </button>
+
+            {/* Mobile Compact Search */}
+            <button
+              type="button"
+              onClick={() => setCmdOpen(true)}
+              className="flex min-w-0 flex-1 items-center gap-2 rounded-xl border border-surface-border bg-background/80 px-2.5 py-1.5 text-xs text-muted sm:hidden"
+            >
+              <Search className="h-3.5 w-3.5 shrink-0" />
+              <span className="truncate">Search NOVA ONE...</span>
+            </button>
           </div>
 
-          <div ref={headerActionsRef} className="flex items-center gap-2">
+          <div ref={headerActionsRef} className="flex shrink-0 items-center gap-1.5 sm:gap-2">
             {/* Role Switcher */}
             <div className="relative hidden md:block">
               <button
@@ -420,10 +456,10 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
               type="button"
               onClick={() => setAiOpen(true)}
               title="NOVA AI Business Assistant (Phase 6)"
-              className="hidden items-center gap-1.5 rounded-xl border border-brand-teal/30 bg-brand-teal/10 px-2.5 py-2 text-xs font-medium text-brand-teal hover:bg-brand-teal/15 sm:inline-flex dark:text-brand-green"
+              className="inline-flex items-center gap-1.5 rounded-xl border border-brand-teal/30 bg-brand-teal/10 px-2.5 py-2 text-xs font-medium text-brand-teal hover:bg-brand-teal/15 dark:text-brand-green"
             >
               <Sparkles className="h-3.5 w-3.5" />
-              <span>AI</span>
+              <span className="hidden sm:inline">AI</span>
             </button>
 
             {/* Notifications */}
@@ -516,8 +552,52 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page Body */}
-        <main className="nova-ambient flex-1 p-4 lg:p-6">{children}</main>
+        <main className="nova-ambient flex-1 p-3.5 pb-24 lg:p-6 lg:pb-6">
+          {children}
+        </main>
       </div>
+
+      {/* Native Mobile Bottom Tab Bar */}
+      <nav className="pb-safe fixed inset-x-0 bottom-0 z-40 grid grid-cols-5 border-t border-surface-border bg-surface/95 px-2 pt-1.5 backdrop-blur-xl lg:hidden">
+        {[
+          { label: "Home", href: "/", icon: LayoutDashboard },
+          { label: "CRM", href: "/crm", icon: Target },
+          { label: "Inbox", href: "/inbox", icon: Inbox, badge: "9" },
+          { label: "Projects", href: "/projects", icon: FolderKanban },
+        ].map((tab) => {
+          const Icon = tab.icon;
+          const active = pathname === tab.href;
+          return (
+            <Link
+              key={tab.href}
+              href={tab.href}
+              className={`relative flex flex-col items-center justify-center gap-0.5 rounded-xl py-1.5 text-[10px] font-semibold transition-all active:scale-95 ${
+                active
+                  ? "bg-brand-primary/12 text-brand-primary"
+                  : "text-muted"
+              }`}
+            >
+              <div className="relative">
+                <Icon className="h-4.5 w-4.5" />
+                {tab.badge && (
+                  <span className="absolute -top-1 -right-2 rounded-full bg-brand-green px-1 text-[8px] font-bold text-white">
+                    {tab.badge}
+                  </span>
+                )}
+              </div>
+              <span>{tab.label}</span>
+            </Link>
+          );
+        })}
+        <button
+          type="button"
+          onClick={() => setMobileOpen(true)}
+          className="flex flex-col items-center justify-center gap-0.5 rounded-xl py-1.5 text-[10px] font-semibold text-muted active:scale-95"
+        >
+          <Menu className="h-4.5 w-4.5" />
+          <span>Menu</span>
+        </button>
+      </nav>
 
       <NovaAiDrawer open={aiOpen} onClose={() => setAiOpen(false)} />
       <CommandPalette

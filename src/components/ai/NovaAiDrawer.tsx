@@ -78,8 +78,8 @@ export function NovaAiDrawer({ open, onClose }: { open: boolean; onClose: () => 
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-black/50 backdrop-blur-xs" onClick={onClose}>
-      <div className="flex h-full w-full max-w-md flex-col border-l border-surface-border bg-surface shadow-2xl" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-end justify-end bg-black/50 backdrop-blur-xs sm:items-stretch" onClick={onClose}>
+      <div className="flex h-[85vh] w-full flex-col rounded-t-3xl border-t border-surface-border bg-surface shadow-2xl sm:h-full sm:max-w-md sm:rounded-none sm:border-t-0 sm:border-l" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
           <div className="flex items-center gap-2.5">
             <div className="nova-gradient rounded-xl p-2 text-white"><Sparkles className="h-4 w-4" /></div>
